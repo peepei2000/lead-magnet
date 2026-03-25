@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Roadmap de Escalamiento — Aristeia Growth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0a0a0f;--bg2:#111118;--bg3:#16161f;--border:rgba(255,255,255,0.08);--bh:rgba(255,255,255,0.18);--gold:#c9a84c;--gold2:#e8c96a;--text:#f0ede8;--muted:#7a7880;--success:#4caf82;--danger:#e05a5a;--r:16px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4}
+#progress-bar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--bg3);z-index:100;display:none}
+#progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .5s cubic-bezier(.4,0,.2,1);box-shadow:0 0 12px var(--gold)}
+#step-counter{position:fixed;top:16px;right:20px;font-size:11px;color:var(--muted);letter-spacing:.12em;z-index:100;display:none}
+.screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;position:relative;z-index:1}
+.card{width:100%;max-width:560px;transition:opacity .28s ease,transform .28s ease}
+.card.fade-out{opacity:0;transform:translateY(8px)}
+h1.hero{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,5vw,2.8rem);font-weight:900;line-height:1.15;color:var(--text);margin-bottom:20px}
+h1.hero .gold{color:var(--gold2)}
+h2.step-title{font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:20px;line-height:1.3}
+p.sub{color:var(--muted);font-size:.95rem;line-height:1.7;margin-bottom:24px}
+.logo{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;letter-spacing:.15em;color:var(--gold);text-transform:uppercase;margin-bottom:36px;display:flex;align-items:center;gap:10px;justify-content:center}
+.logo-dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.social-proof{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px;justify-content:center}
+.proof-pill{padding:6px 14px;border-radius:100px;border:1px solid var(--border);font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.btn-cta{display:inline-block;width:100%;padding:16px 32px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold2) 100%);color:#0a0a0f;font-weight:800;font-size:.95rem;letter-spacing:.1em;border:none;border-radius:100px;cursor:pointer;text-align:center;transition:all .25s;text-decoration:none;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 4px 24px rgba(201,168,76,.25)}
+.btn-cta:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(201,168,76,.4)}
+.btn-cta:disabled{opacity:.3;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-cta.pulse{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 4px 24px rgba(201,168,76,.25)}50%{box-shadow:0 4px 40px rgba(201,168,76,.6)}}
+.btn-back{background:none;border:none;color:var(--muted);font-size:.85rem;cursor:pointer;font-family:inherit;transition:color .2s;padding:8px 0}
+.btn-back:hover{color:var(--text)}
+.input-field{width:100%;padding:14px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:.95rem;font-family:inherit;transition:border-color .2s;outline:none}
+.input-field::placeholder{color:var(--muted)}
+.input-field:focus{border-color:var(--gold)}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.phone-row{display:flex;gap:10px;margin-bottom:10px}
+.select-field{padding:14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-family:inherit;font-size:.9rem;outline:none;cursor:pointer;transition:border-color .2s}
+.select-field:focus{border-color:var(--gold)}
+.option-card{width:100%;text-align:left;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;font-family:inherit;color:var(--text);margin-bottom:8px}
+.option-card:hover{border-color:var(--bh);background:var(--bg3)}
+.option-card.selected{border-color:var(--gold);background:rgba(201,168,76,.07);box-shadow:0 0 0 1px var(--gold)}
+.option-card:disabled{opacity:.3;cursor:not-allowed}
+.option-emoji{font-size:1.3rem;flex-shrink:0;width:28px;text-align:center}
+.option-label{font-size:.9rem;font-weight:500;flex:1}
+.option-check{color:var(--gold);font-size:1rem;flex-shrink:0;opacity:0;transition:opacity .2s}
+.option-card.selected .option-check{opacity:1}
+.team-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+@media(max-width:480px){.team-grid,.input-row{grid-template-columns:1fr}}
+.team-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px;cursor:pointer;transition:all .2s;text-align:left;font-family:inherit;color:var(--text)}
+.team-card:hover{border-color:var(--bh)}
+.team-card.selected{border-color:var(--gold);background:rgba(201,168,76,.07);box-shadow:0 0 0 1px var(--gold)}
+.team-emoji{font-size:1.6rem;margin-bottom:8px}
+.team-label{font-size:.85rem;font-weight:700;letter-spacing:.04em;margin-bottom:4px}
+.team-desc{font-size:.75rem;color:var(--muted)}
+.nav-actions{margin-top:28px;display:flex;flex-direction:column;gap:10px;align-items:center}
+#loading-screen{display:none;position:fixed;inset:0;z-index:200;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;gap:28px}
+.spinner{width:52px;height:52px;border:3px solid var(--bg3);border-top-color:var(--gold);border-radius:50%;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-title{font-size:1.4rem;font-weight:700}
+.loading-msg{color:var(--muted);font-size:.9rem;transition:opacity .3s}
+#results-page{display:none}
+.results-header{background:linear-gradient(180deg,#0d0d14 0%,var(--bg) 100%);padding:64px 20px 48px;text-align:center;position:relative;border-bottom:1px solid var(--border)}
+.results-header::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:400px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.results-logo{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:24px}
+.results-eyebrow{font-size:10px;letter-spacing:.4em;color:var(--muted);text-transform:uppercase;margin-bottom:12px}
+.results-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;line-height:1.2}
+.results-title .name{color:var(--gold2)}
+.results-divider{width:60px;height:2px;background:var(--gold);margin:20px auto 0;border-radius:1px}
+.results-body{max-width:720px;margin:0 auto;padding:48px 20px 80px}
+.section{margin-bottom:48px}
+.section-title{font-size:11px;font-weight:700;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.stage-badge{display:inline-flex;align-items:center;gap:10px;padding:8px 20px;border-radius:100px;border:1px solid var(--gold);background:rgba(201,168,76,.08);font-size:.8rem;font-weight:700;letter-spacing:.1em;color:var(--gold);text-transform:uppercase;margin-bottom:20px}
+.stage-emoji-big{font-size:3.5rem;margin:16px 0}
+.stage-desc{font-size:1rem;color:var(--text);line-height:1.7;max-width:540px;margin:0 auto}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.info-grid,.metrics-grid,.signs-grid{grid-template-columns:1fr}}
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px}
+.info-card-label{font-size:10px;font-weight:700;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-bottom:10px}
+.info-card-text{font-size:.9rem;color:var(--text);line-height:1.6}
+.bottleneck-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:12px}
+.bn-badge{display:inline-block;padding:3px 12px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;border:1px solid}
+.bn-critico{color:#e05a5a;border-color:rgba(224,90,90,.4);background:rgba(224,90,90,.08)}
+.bn-alto{color:#e09a5a;border-color:rgba(224,154,90,.4);background:rgba(224,154,90,.08)}
+.bn-medio{color:var(--gold);border-color:rgba(201,168,76,.4);background:rgba(201,168,76,.08)}
+.bn-problem{font-size:.9rem;color:var(--text);line-height:1.6;margin-bottom:10px}
+.bn-solution{font-size:.88rem;color:var(--gold2);display:flex;gap:8px;align-items:flex-start}
+.action-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px;margin-bottom:12px;display:flex;gap:20px;border-left:3px solid var(--gold)}
+.action-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold);line-height:1;flex-shrink:0}
+.action-text{font-size:.9rem;color:var(--text);line-height:1.7}
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.metric-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:18px}
+.metric-card.hl{border-color:var(--gold);background:rgba(201,168,76,.07)}
+.metric-label{font-size:10px;font-weight:700;letter-spacing:.15em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+.metric-card.hl .metric-label{color:var(--gold)}
+.metric-value{font-size:.88rem;color:var(--text);line-height:1.5}
+.signs-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.signs-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:22px}
+.signs-header{font-size:.8rem;font-weight:700;margin-bottom:14px}
+.signs-header.ok{color:var(--success)}
+.signs-header.warn{color:var(--danger)}
+.signs-list{list-style:none}
+.signs-list li{font-size:.85rem;color:var(--text);line-height:1.6;margin-bottom:8px;display:flex;gap:8px}
+.dot-ok{color:var(--success);flex-shrink:0}
+.dot-warn{color:var(--danger);flex-shrink:0}
+.next-stage-card{background:var(--bg2);border:1px solid rgba(201,168,76,.3);border-radius:var(--r);padding:28px;text-align:center}
+.next-stage-label{font-size:10px;font-weight:700;letter-spacing:.25em;color:var(--gold);text-transform:uppercase;margin-bottom:12px}
+.next-stage-text{font-size:.9rem;color:var(--muted);line-height:1.7}
+.moti-card{background:linear-gradient(135deg,rgba(201,168,76,.15) 0%,rgba(201,168,76,.05) 100%);border:1px solid rgba(201,168,76,.2);border-radius:var(--r);padding:32px;text-align:center}
+.moti-text{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--text);line-height:1.8;font-style:italic}
+.email-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:32px;text-align:center}
+.email-title{font-size:1.1rem;font-weight:700;margin-bottom:8px}
+.email-sub{font-size:.85rem;color:var(--muted);margin-bottom:20px}
+.email-row{display:flex;gap:10px;max-width:420px;margin:0 auto}
+.email-row .input-field{flex:1}
+.email-row .btn-cta{width:auto;padding:14px 20px;white-space:nowrap;font-size:.8rem}
+.email-success{font-size:.9rem;color:var(--success);font-weight:700}
+.final-cta{text-align:center;padding:48px 0}
+.final-cta p{color:var(--text);font-size:1rem;font-weight:500;margin-bottom:20px}
+.final-cta a.btn-cta{max-width:360px;display:inline-block;width:auto;padding:18px 40px}
+.disclaimer{font-size:.78rem;color:var(--muted);margin-top:10px!important}
+</style>
+</head>
+<body>
+
+<div id="progress-bar"><div id="progress-fill" style="width:0%"></div></div>
+<div id="step-counter"></div>
+
+<div id="loading-screen">
+  <div class="spinner"></div>
+  <h2 class="loading-title">Analizando tu clínica...</h2>
+  <p class="loading-msg" id="loading-msg">Identificando tu etapa de crecimiento...</p>
+</div>
+
+<div id="form-screen" class="screen">
+  <div class="card" id="step-card"></div>
+</div>
+
+<div id="results-page">
+  <div class="results-header">
+    <div class="results-logo">✦ Aristeia Growth ✦</div>
+    <p class="results-eyebrow">Roadmap Personalizado</p>
+    <h1 class="results-title">Tu Roadmap de Escalamiento,<br><span class="name" id="r-name"></span></h1>
+    <div class="results-divider"></div>
+  </div>
+  <div class="results-body">
+    <div class="section" style="text-align:center">
+      <div id="r-stage-badge" class="stage-badge"></div>
+      <div id="r-stage-emoji" class="stage-emoji-big"></div>
+      <p id="r-stage-desc" class="stage-desc"></p>
+    </div>
+    <div class="section">
+      <p class="section-title">Tu Situación</p>
+      <div class="info-grid">
+        <div class="info-card"><div class="info-card-label">📍 Situación actual</div><div class="info-card-text" id="r-bottom-line"></div></div>
+        <div class="info-card"><div class="info-card-label">🎯 Para graduarte</div><div class="info-card-text" id="r-graduate-by"></div></div>
+      </div>
+    </div>
+    <div class="section"><p class="section-title">Tus Cuellos de Botella</p><div id="r-bottlenecks"></div></div>
+    <div class="section"><p class="section-title">3 Acciones Esta Semana</p><div id="r-actions"></div></div>
+    <div class="section"><p class="section-title">Métricas Clave</p><div class="metrics-grid" id="r-metrics"></div></div>
+    <div class="section">
+      <div class="signs-grid">
+        <div class="signs-card"><p class="signs-header ok">✅ Señales de que vas bien</p><ul class="signs-list" id="r-success"></ul></div>
+        <div class="signs-card"><p class="signs-header warn">⚠️ Señales de alerta</p><ul class="signs-list" id="r-warnings"></ul></div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="next-stage-card">
+        <p class="next-stage-label">Lo que viene cuando gradúes esta etapa →</p>
+        <p class="next-stage-text" id="r-next-stage"></p>
+      </div>
+    </div>
+    <div class="section"><div class="moti-card"><p class="moti-text" id="r-moti"></p></div></div>
+    <div class="section">
+      <div class="email-card">
+        <div id="email-form-area">
+          <p class="email-title">📩 ¿Quieres recibir esto en tu email?</p>
+          <p class="email-sub">Te enviamos tu roadmap completo para que lo tengas siempre a mano.</p>
+          <div class="email-row">
+            <input type="email" id="email-input" class="input-field" placeholder="tu@email.com"/>
+            <button class="btn-cta" onclick="sendEmail()">ENVIARME →</button>
+          </div>
+        </div>
+        <div id="email-success-area" style="display:none">
+          <div style="font-size:2.5rem;margin-bottom:10px">✅</div>
+          <p class="email-success">¡Listo! Recibido — te enviamos tu roadmap pronto.</p>
+        </div>
+      </div>
+    </div>
+    <div class="final-cta">
+      <p>¿Quieres implementar este roadmap con Ian y Milan?</p>
+      <a href="https://itsaristeia.com/" target="_blank" class="btn-cta">AGENDA TU SESIÓN DE CRECIMIENTO →</a>
+      <p class="disclaimer">Sin costo. Sin compromiso.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const SCRIPT_URL="https://script.google.com/macros/s/AKfycbzrsh0Y1bKis7H3brfn0qtpEEjMB3hHV48Q9Nd4livwWcydeTK7-biW6dKC2crnh2bt/exec";
+const TOTAL=10;
+let step=1;
+let D={firstName:"",lastName:"",email:"",countryCode:"+56",phone:"",revenue:"",newPatients:"",teamSize:"",whoSells:"",channels:[],painPoints:[]};
+
+const CC=[{c:"+56",f:"🇨🇱"},{c:"+52",f:"🇲🇽"},{c:"+57",f:"🇨🇴"},{c:"+54",f:"🇦🇷"},{c:"+51",f:"🇵🇪"},{c:"+593",f:"🇪🇨"},{c:"+34",f:"🇪🇸"}];
+const RO=[{e:"🌱",l:"Apenas comenzando / Sin facturación aún"},{e:"💰",l:"Menos de $5,000 USD / mes"},{e:"📈",l:"Entre $5,000 – $15,000 USD / mes"},{e:"🚀",l:"Entre $15,000 – $30,000 USD / mes"},{e:"⚡",l:"Entre $30,000 – $40,000 USD / mes"},{e:"🔥",l:"Entre $40,000 – $60,000 USD / mes"},{e:"💎",l:"Entre $60,000 – $85,000 USD / mes"},{e:"🏆",l:"Más de $85,000 USD / mes"}];
+const PO=[{e:"😔",l:"Menos de 10 pacientes nuevos"},{e:"😐",l:"Entre 10 – 25 pacientes nuevos"},{e:"🙂",l:"Entre 25 – 40 pacientes nuevos"},{e:"😊",l:"Entre 40 – 60 pacientes nuevos"},{e:"💪",l:"Entre 60 – 100 pacientes nuevos"},{e:"🔥",l:"Más de 100 pacientes nuevos"}];
+const TO=[{e:"🧑‍⚕️",l:"SOLO YO",d:"Soy el médico, el vendedor y el gerente"},{e:"👥",l:"YO + 1-2 PERSONAS",d:"Tengo apoyo básico pero depende todo de mí"},{e:"🏢",l:"EQUIPO PEQUEÑO (3-5)",d:"Tengo equipo pero aún no está estructurado"},{e:"🏥",l:"EQUIPO COMPLETO (6+)",d:"Clínica con estructura y múltiples especialistas"}];
+const SO=[{e:"💼",l:"Solo yo — si yo no vendo, no entra dinero"},{e:"🤝",l:"Principalmente yo, el equipo ayuda poco"},{e:"👩‍💼",l:"Mi equipo vende, pero no tienen proceso claro"},{e:"✅",l:"Mi equipo vende de forma independiente con proceso"}];
+const CHO=[{e:"📱",l:"Meta Ads (Facebook / Instagram)"},{e:"🔍",l:"Google Ads"},{e:"📲",l:"Contenido orgánico en redes"},{e:"👄",l:"Boca a boca y referidos"},{e:"🌐",l:"Página web / SEO"},{e:"🤷",l:"No tengo un sistema claro de captación"}];
+const PAO=[{e:"📉",l:"No tengo suficientes pacientes nuevos consistentemente"},{e:"💬",l:"Tengo pacientes pero no cierro bien las ventas"},{e:"😓",l:"Todo depende de mí — no puedo delegar nada"},{e:"📊",l:"No sé qué métricas medir ni cómo tomar decisiones"},{e:"👥",l:"Mi equipo no vende ni atiende como yo quiero"},{e:"💸",l:"Mezclo finanzas personales con el negocio — un desastre"},{e:"🔄",l:"Los pacientes no regresan ni compran más tratamientos"},{e:"⚙️",l:"No tengo procesos ni sistemas — todo es improvisado"}];
+const LM=["Identificando tu etapa de crecimiento...","Detectando tus cuellos de botella...","Comparando con +100 clínicas en LATAM...","Construyendo tu plan de acción personalizado...","Últimos ajustes a tu roadmap..."];
+
+function classifyStage(r){const i=RO.findIndex(o=>o.l===r);if(i<=2)return{n:1,name:"La Clínica Independiente",e:"🌱"};if(i<=4)return{n:2,name:"La Clínica en Construcción",e:"🏗️"};return{n:3,name:"La Clínica Escalando",e:"🚀"}}
+
+function generateRoadmap(d){
+  const s=classifyStage(d.revenue);
+  const p=d.painPoints,ch=d.channels;
+  const hasMeta=ch.includes("Meta Ads (Facebook / Instagram)");
+  const noCap=ch.includes("No tengo un sistema claro de captación");
+  const soloYo=d.teamSize==="SOLO YO"||d.teamSize==="YO + 1-2 PERSONAS";
+
+  const SC={
+    1:{desc:"Estás en la etapa más crítica del negocio: todo pasa por ti. Cada paciente que entra, cada venta que se cierra, cada tratamiento que se da — depende de tu presencia directa. Esto limita brutalmente tu techo de ingresos y te mantiene atrapado operando, sin tiempo para crecer.",bl:"Tu clínica funciona como trabajo independiente, no como un negocio. La diferencia es que un negocio puede operar sin ti — el tuyo todavía no puede.",gb:"Superar los $15,000 USD/mes con al menos un proceso documentado que alguien más pueda ejecutar sin pedirte permiso.",ns:"En la Etapa 2 empiezas a construir sistemas: un proceso de ventas que tu equipo puede ejecutar, campañas que generan leads predecibles, y tú tienes tiempo para trabajar en el negocio, no solo en él.",m:'"La diferencia entre una clínica que te agota y una que te da libertad no está en los pacientes que tienes — está en los sistemas que construyes. Hoy es el día para empezar."',met:{t:"Optimiza tu ticket promedio hacia $300–500 USD por tratamiento",c:"Tu CAC no debería superar el 15% del ticket promedio",g:"Llegar a $15,000 USD/mes con flujo predecible de leads"}},
+    2:{desc:"Ya demostraste que el modelo funciona. Tienes pacientes, tienes ingresos, tienes algún equipo. El problema ahora no es generar demanda — es convertirla eficientemente y construir una estructura que no dependa de que estés presente en cada decisión.",bl:"Tienes los ingredientes pero aún no la receta. La clínica crece cuando estás activo, pero se frena cuando te vas. El objetivo ahora es sistematizar lo que ya funciona.",gb:"Superar los $40,000 USD/mes con un equipo que cierra ventas de forma independiente y campañas que generan ROI predecible.",ns:"En la Etapa 3 tienes una máquina de crecimiento: marketing automatizado, equipo comercial con métricas, y tú enfocado en expansión y estrategia — no en operaciones.",m:'"Ya construiste la base. Ahora no se trata de trabajar más — se trata de construir más inteligente. El salto de $15k a $40k/mes lo dan los sistemas, no el esfuerzo bruto."',met:{t:"Estandariza tu ticket promedio hacia $400–700 USD",c:"CAC objetivo: 10–12% del LTV del paciente",g:"Llegar a $40,000 USD/mes con equipo vendiendo de forma autónoma"}},
+    3:{desc:"Estás en la élite de las clínicas estéticas en LATAM. Tienes un negocio real con ingresos significativos y estructura. El desafío ahora es escalar sin perder calidad, construir múltiples fuentes de ingreso y posicionarte como la referencia del mercado.",bl:"Ya no compites por pacientes — compites por posicionamiento. Tu siguiente palanca de crecimiento no es marketing, es experiencia del paciente, ticket promedio y retención.",gb:"Superar los $100,000 USD/mes con múltiples líneas de ingresos, equipo directivo y procesos de expansión documentados.",ns:"En la Etapa 4 el juego cambia completamente: apertura de sucursales, construcción de marca personal del fundador y sistemas para escalar el modelo a otros mercados.",m:'"Llegaste hasta aquí porque hiciste las cosas diferente. Para el siguiente nivel, el juego no es optimizar — es reinventar. La versión de ti que llega a $100k/mes piensa distinto al que llegó a $60k."',met:{t:"Lleva tu ticket promedio por encima de $800 USD con paquetes premium",c:"CAC < 8% del LTV — con retención siendo tu ventaja competitiva",g:"Escalar a $100,000 USD/mes con estructura para segunda sucursal"}}
+  };
+  const sc=SC[s.n];
+  const bns=[];
+  if(p.includes("No tengo suficientes pacientes nuevos consistentemente")||noCap)bns.push({area:"CAPTACIÓN",pri:"CRÍTICO",prob:"No tienes un sistema predecible de generación de pacientes. Dependes del boca a boca o de campañas inconsistentes — lo que hace que tu facturación suba y baje cada mes.",sol:hasMeta?"Estructura tus campañas con objetivo de conversión, segmentación por intención y presupuesto fijo mensual. Mide costo por lead semanal.":"Antes de invertir en publicidad, define tu oferta de entrada (tratamiento ancla) y tu proceso de seguimiento. Sin eso, los ads solo gastan dinero."});
+  if(p.includes("Tengo pacientes pero no cierro bien las ventas"))bns.push({area:"CONVERSIÓN",pri:"CRÍTICO",prob:"Generas consultas pero no las conviertes en ventas. Cada lead que no cierra es dinero invertido en marketing que se pierde.",sol:"Implementa un guión de ventas con 5 etapas: diagnóstico de dolor, agitación del problema, presentación de solución, manejo de objeciones y cierre."});
+  if(p.includes("Todo depende de mí — no puedo delegar nada")||soloYo)bns.push({area:"DEPENDENCIA",pri:soloYo?"CRÍTICO":"ALTO",prob:"Eres el cuello de botella de tu propio negocio. Si te enfermas, te vas de viaje o simplemente quieres descansar — la clínica para.",sol:"Documenta los 3 procesos que más tiempo te consumen y capacita a alguien para ejecutarlos. Empieza por el proceso de agendamiento y seguimiento de leads."});
+  if(p.includes("Mi equipo no vende ni atiende como yo quiero"))bns.push({area:"EQUIPO",pri:"ALTO",prob:"Tu equipo no tiene un estándar claro de atención y venta. Lo que tú haces intuitivamente, ellos lo improvisan.",sol:"Crea un manual de atención con scripts de WhatsApp, el protocolo de la primera consulta y el proceso de upsell post-tratamiento."});
+  if(p.includes("No sé qué métricas medir ni cómo tomar decisiones"))bns.push({area:"MÉTRICAS",pri:"ALTO",prob:"Estás tomando decisiones de negocio en base a sensaciones, no a datos. Sin métricas claras, no sabes qué funciona ni dónde invertir.",sol:"Define y mide 5 KPIs semanales: nuevos leads, tasa de conversión, ticket promedio, CAC y retención. Un Sheet con estos números transforma tus decisiones."});
+  if(p.includes("Los pacientes no regresan ni compran más tratamientos"))bns.push({area:"RETENCIÓN",pri:"ALTO",prob:"Estás en modo adquisición constante porque no tienes sistema de retención. Conseguir un paciente nuevo cuesta 5x más que retener uno existente.",sol:"Implementa un protocolo de seguimiento post-tratamiento: mensaje a los 7 días, recomendación al mes y reactivación a los 90 días sin visita."});
+  if(p.includes("Mezclo finanzas personales con el negocio — un desastre"))bns.push({area:"FINANZAS",pri:"ALTO",prob:"Mezclar finanzas personales con el negocio destruye tu capacidad de decisión. No sabes si realmente estás ganando dinero.",sol:"Abre una cuenta bancaria exclusiva para la clínica esta semana y págate un sueldo fijo mensual como dueño."});
+  if(p.includes("No tengo procesos ni sistemas — todo es improvisado"))bns.push({area:"SISTEMAS",pri:"MEDIO",prob:"Sin procesos documentados, la calidad depende del humor y la memoria de cada persona — incluyendo la tuya.",sol:"Escribe un SOP para las 3 tareas que más se repiten. No tiene que ser perfecto — solo tiene que existir."});
+  if(bns.length===0)bns.push({area:"CRECIMIENTO",pri:"ALTO",prob:"Para pasar al siguiente nivel necesitas identificar dónde el crecimiento se atasca: ¿es marketing, ventas, equipo o sistemas?",sol:"Analiza tu embudo completo: ¿cuántos leads entran, cuántos convierten, cuántos regresan? El cuello de botella está donde el número cae más."});
+
+  const top=bns.slice(0,3);
+  const acts=[];
+  if(top.find(b=>b.area==="CAPTACIÓN")||noCap)acts.push(hasMeta?"Revisa tus campañas activas esta semana. Pausa los anuncios con CPL mayor al 20% de tu ticket promedio y duplica el presupuesto de los que mejor convierten.":"Define tu tratamiento ancla — el servicio de entrada más fácil de vender. Crea una oferta específica con precio claro y empiézala a promocionar en redes este mismo lunes.");
+  if(top.find(b=>b.area==="CONVERSIÓN"))acts.push("Escribe hoy el guión de WhatsApp que tu equipo usa para responder consultas. Incluye: saludo con nombre, pregunta de diagnóstico, presentación de solución y CTA para agendar. Mide la tasa de conversión esta semana.");
+  if(top.find(b=>b.area==="DEPENDENCIA")||soloYo)acts.push("Identifica la tarea que más tiempo te consume en un día normal. Esta semana escríbela como proceso paso a paso en un Google Doc y entrena a alguien para hacerla.");
+  if(top.find(b=>b.area==="MÉTRICAS"))acts.push("Crea un Google Sheet esta semana con 5 columnas: fecha, leads nuevos, consultas atendidas, cierres y facturación. Llénalo retroactivamente los últimos 30 días.");
+  if(top.find(b=>b.area==="RETENCIÓN"))acts.push("Toma los pacientes que no han vuelto en 60+ días y envíales hoy un mensaje personalizado con una razón concreta para reagendar. El 20% va a responder.");
+  if(top.find(b=>b.area==="FINANZAS"))acts.push("Esta semana abre una cuenta bancaria exclusiva para la clínica, define tu sueldo como dueño y paga eso primero que cualquier otro gasto del mes.");
+  if(top.find(b=>b.area==="EQUIPO"))acts.push("Programa una reunión de 30 minutos con tu equipo para definir el estándar de atención de WhatsApp: tiempo de respuesta, tono y los 3 mensajes que siempre deben enviarse.");
+  const extras=["Graba un video de 60 segundos contando un caso de éxito de un paciente y publícalo en redes esta semana. El contenido de prueba social convierte mejor que cualquier anuncio pagado.","Pide a tus últimos 10 pacientes satisfechos que te dejen una reseña en Google Maps. Son el mejor SEO local y el activo de confianza más subestimado.","Asigna a alguien específicamente para responder WhatsApp en horario de atención. Cada hora de demora reduce tu tasa de conversión un 40%."];
+  for(const e of extras){if(acts.length>=3)break;if(!acts.includes(e))acts.push(e);}
+
+  const succ=s.n===1?["Tu agenda tiene al menos 3 semanas de anticipación","Recibes 20+ consultas nuevas por WhatsApp al mes","Tienes al menos 1 proceso que alguien más puede hacer sin preguntarte"]:s.n===2?["Tus campañas de Meta/Google tienen ROAS mayor a 3x","Tu equipo cierra ventas sin que estés presente","Tu ticket promedio sube mes a mes sin bajar precios"]:["Tu equipo directivo toma decisiones sin consultarte todo","Tu tasa de retención de pacientes supera el 60%","Tienes más de 3 fuentes de ingresos activas"];
+  const warn=s.n===1?["Si te enfermas una semana, la facturación cae más del 50%","No sabes cuánto cuesta conseguir cada paciente nuevo","Llevas más de 6 meses sin crecer en facturación"]:s.n===2?["Tu equipo rota frecuentemente y cada salida te afecta mucho","Tus campañas de ads no son rentables o no sabes si lo son","Tu crecimiento depende principalmente de temporadas altas"]:["Tu crecimiento se ha estancado en el mismo rango por más de 3 meses","No tienes un plan de expansión documentado para los próximos 12 meses","Tus competidores están creciendo más rápido que tú"];
+
+  return{sn:s.n,name:s.name,emoji:s.e,desc:sc.desc,bl:sc.bl,gb:sc.gb,bns:top,acts:acts.slice(0,3),met:sc.met,succ,warn,ns:sc.ns,moti:sc.m};
+}
+
+function optCard(e,l,field){
+  const esc=l.replace(/'/g,"\\'");
+  const sel=D[field]===l;
+  return`<button class="option-card${sel?' selected':''}" onclick="D['${field}']='${esc}';render();chk()"><span class="option-emoji">${e}</span><span class="option-label">${l}</span><span class="option-check">✓</span></button>`;
+}
+function multiCard(e,l,field,max){
+  const esc=l.replace(/'/g,"\\'");
+  const arr=D[field],sel=arr.includes(l),dis=!sel&&max&&arr.length>=max;
+  return`<button class="option-card${sel?' selected':''}${dis?' disabled':''}" ${dis?'disabled':''} onclick="tog('${field}','${esc}',${max||0})"><span class="option-emoji">${e}</span><span class="option-label">${l}</span><span class="option-check">✓</span></button>`;
+}
+function tog(field,val,max){
+  const a=D[field];
+  if(a.includes(val)){D[field]=a.filter(v=>v!==val)}else{if(max&&a.length>=max)return;D[field]=[...a,val]}
+  render();chk();
+}
+function nav(s){return`<div class="nav-actions"><button id="btn-c" class="btn-cta" onclick="cont()" disabled>${s===10?'GENERAR MI ROADMAP →':'CONTINUAR →'}</button><button class="btn-back" onclick="back()">← Anterior</button></div>`}
+
+function render(){
+  const c=document.getElementById('step-card');
+  switch(step){
+    case 1:return c.innerHTML=`<div style="text-align:center"><div class="logo"><span class="logo-dot"></span>Aristeia Growth<span class="logo-dot"></span></div><h1 class="hero">Descubre Exactamente Qué Está <span class="gold">Frenando el Crecimiento</span> de Tu Clínica</h1><p class="sub">Responde 10 preguntas y recibe un roadmap de escalamiento personalizado — basado en +100 clínicas estéticas en LATAM.</p><div class="social-proof"><span class="proof-pill">✦ +100 clínicas</span><span class="proof-pill">✦ +$2M USD generados</span><span class="proof-pill">✦ Resultado inmediato</span></div><button class="btn-cta" onclick="goTo(2)">OBTENER MI ROADMAP GRATIS →</button><p style="color:var(--muted);font-size:.78rem;margin-top:14px">Sin spam. Sin costo. Solo tu plan de acción.</p></div>`;
+    case 2:return c.innerHTML=`<h2 class="step-title">¿Cuál es tu nombre?</h2><div class="input-row"><input class="input-field" placeholder="Nombre" value="${D.firstName}" oninput="D.firstName=this.value;chk()"/><input class="input-field" placeholder="Apellido" value="${D.lastName}" oninput="D.lastName=this.value;chk()"/></div>${nav(2)}`;
+    case 3:return c.innerHTML=`<h2 class="step-title">¿A dónde enviamos tu roadmap personalizado?</h2><input type="email" class="input-field" placeholder="Correo electrónico" value="${D.email}" style="margin-bottom:10px" oninput="D.email=this.value;chk()"/><p class="sub" style="font-size:.82rem;margin-bottom:24px">📩 Te lo enviamos al instante. Zero spam, lo prometemos.</p>${nav(3)}`;
+    case 4:return c.innerHTML=`<h2 class="step-title">¿Cuál es tu WhatsApp?</h2><div class="phone-row"><select class="select-field" onchange="D.countryCode=this.value">${CC.map(x=>`<option value="${x.c}"${x.c===D.countryCode?' selected':''}>${x.f} ${x.c}</option>`).join('')}</select><input type="tel" class="input-field" placeholder="Tu número" value="${D.phone}" oninput="D.phone=this.value.replace(/[^0-9]/g,'');chk()"/></div><p class="sub" style="font-size:.82rem;margin-bottom:24px">Solo para contactarte si tienes dudas sobre tu roadmap.</p>${nav(4)}`;
+    case 5:return c.innerHTML=`<h2 class="step-title">¿Cuánto está facturando tu clínica actualmente?</h2>${RO.map(o=>optCard(o.e,o.l,'revenue')).join('')}${nav(5)}`;
+    case 6:return c.innerHTML=`<h2 class="step-title">¿Cuántos pacientes NUEVOS llegan a tu clínica cada mes?</h2>${PO.map(o=>optCard(o.e,o.l,'newPatients')).join('')}${nav(6)}`;
+    case 7:return c.innerHTML=`<h2 class="step-title">¿Cómo está conformado tu equipo hoy?</h2><div class="team-grid">${TO.map(o=>`<button class="team-card${D.teamSize===o.l?' selected':''}" onclick="D.teamSize='${o.l}';render();chk()"><div class="team-emoji">${o.e}</div><div class="team-label">${o.l}</div><div class="team-desc">${o.d}</div></button>`).join('')}</div>${nav(7)}`;
+    case 8:return c.innerHTML=`<h2 class="step-title">¿Quién cierra las ventas y hace los upsells en tu clínica?</h2>${SO.map(o=>optCard(o.e,o.l,'whoSells')).join('')}${nav(8)}`;
+    case 9:return c.innerHTML=`<h2 class="step-title">¿Cómo estás consiguiendo pacientes hoy?</h2><p style="color:var(--muted);font-size:.82rem;margin-bottom:16px">(Selecciona todos los que apliquen)</p>${CHO.map(o=>multiCard(o.e,o.l,'channels',0)).join('')}${nav(9)}`;
+    case 10:return c.innerHTML=`<h2 class="step-title">¿Cuáles son tus mayores dolores en tu clínica HOY?</h2><p style="color:var(--muted);font-size:.82rem;margin-bottom:16px">Selecciona hasta 3 · <span>${D.painPoints.length}</span>/3 seleccionados</p>${PAO.map(o=>multiCard(o.e,o.l,'painPoints',3)).join('')}${nav(10)}`;
+  }
+}
+function chk(){
+  const b=document.getElementById('btn-c');if(!b)return;
+  const ok=step===2?(D.firstName.trim()&&D.lastName.trim()):step===3?/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(D.email):step===4?D.phone.trim().length>=6:step===5?D.revenue!=="":step===6?D.newPatients!=="":step===7?D.teamSize!=="":step===8?D.whoSells!=="":step===9?D.channels.length>0:step===10?D.painPoints.length>0:true;
+  b.disabled=!ok;
+  if(step===10&&ok)b.classList.add('pulse');else b.classList.remove('pulse');
+}
+function goTo(n){
+  const c=document.getElementById('step-card');
+  c.classList.add('fade-out');
+  setTimeout(()=>{step=n;progress();render();c.classList.remove('fade-out');chk();},280);
+}
+function back(){if(step>1)goTo(step-1)}
+function cont(){
+  const ok=step===2?(D.firstName.trim()&&D.lastName.trim()):step===3?/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(D.email):step===4?D.phone.trim().length>=6:step===5?D.revenue!=="":step===6?D.newPatients!=="":step===7?D.teamSize!=="":step===8?D.whoSells!=="":step===9?D.channels.length>0:step===10?D.painPoints.length>0:true;
+  if(!ok)return;
+  if(step<10){goTo(step+1);return;}
+  submit();
+}
+function progress(){
+  if(step===1){document.getElementById('progress-bar').style.display='none';document.getElementById('step-counter').style.display='none';return;}
+  document.getElementById('progress-bar').style.display='block';
+  document.getElementById('step-counter').style.display='block';
+  document.getElementById('progress-fill').style.width=((step-1)/(TOTAL-1)*100)+'%';
+  document.getElementById('step-counter').textContent=`Paso ${step-1} de ${TOTAL-1}`;
+}
+async function submit(){
+  document.getElementById('form-screen').style.display='none';
+  const ls=document.getElementById('loading-screen');ls.style.display='flex';
+  let mi=0;const me=document.getElementById('loading-msg');
+  const iv=setInterval(()=>{mi=(mi+1)%LM.length;me.style.opacity=0;setTimeout(()=>{me.textContent=LM[mi];me.style.opacity=1},200);},1800);
+  const t0=Date.now();
+  const r=generateRoadmap(D);
+  try{await fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({firstName:D.firstName,lastName:D.lastName,email:D.email,phone:D.countryCode+D.phone,revenue:D.revenue,newPatients:D.newPatients,teamSize:D.teamSize,whoSells:D.whoSells,channels:D.channels.join(", "),painPoints:D.painPoints.join(", "),stageNumber:r.sn,stageName:r.name,timestamp:new Date().toISOString()})});}catch(e){}
+  const el=Date.now()-t0;if(el<5000)await new Promise(x=>setTimeout(x,5000-el));
+  clearInterval(iv);ls.style.display='none';showR(r);
+}
+function showR(r){
+  document.getElementById('results-page').style.display='block';
+  document.getElementById('progress-bar').style.display='none';
+  document.getElementById('step-counter').style.display='none';
+  window.scrollTo(0,0);
+  document.getElementById('r-name').textContent=D.firstName;
+  document.getElementById('r-stage-badge').textContent=`ETAPA ${r.sn}: ${r.name.toUpperCase()}`;
+  document.getElementById('r-stage-emoji').textContent=r.emoji;
+  document.getElementById('r-stage-desc').textContent=r.desc;
+  document.getElementById('r-bottom-line').textContent=r.bl;
+  document.getElementById('r-graduate-by').textContent=r.gb;
+  document.getElementById('r-bottlenecks').innerHTML=r.bns.map(b=>{
+    const cls=b.pri==="CRÍTICO"?"bn-critico":b.pri==="ALTO"?"bn-alto":"bn-medio";
+    return`<div class="bottleneck-card"><span class="bn-badge ${cls}">${b.area} · ${b.pri}</span><p class="bn-problem">${b.prob}</p><div class="bn-solution"><span>→</span><span>${b.sol}</span></div></div>`;
+  }).join('');
+  document.getElementById('r-actions').innerHTML=r.acts.map((a,i)=>`<div class="action-card"><span class="action-num">${i+1}</span><p class="action-text">${a}</p></div>`).join('');
+  document.getElementById('r-metrics').innerHTML=`<div class="metric-card"><div class="metric-label">Ticket Promedio</div><div class="metric-value">${r.met.t}</div></div><div class="metric-card"><div class="metric-label">CAC Objetivo</div><div class="metric-value">${r.met.c}</div></div><div class="metric-card hl"><div class="metric-label">🎯 Meta Próxima</div><div class="metric-value">${r.met.g}</div></div>`;
+  document.getElementById('r-success').innerHTML=r.succ.map(s=>`<li><span class="dot-ok">•</span>${s}</li>`).join('');
+  document.getElementById('r-warnings').innerHTML=r.warn.map(s=>`<li><span class="dot-warn">•</span>${s}</li>`).join('');
+  document.getElementById('r-next-stage').textContent=r.ns;
+  document.getElementById('r-moti').textContent=r.moti;
+  document.getElementById('email-input').value=D.email;
+}
+function sendEmail(){
+  const e=document.getElementById('email-input').value;
+  if(!e||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))return;
+  document.getElementById('email-form-area').style.display='none';
+  document.getElementById('email-success-area').style.display='block';
+  try{fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/json"},body:JSON.stringify({action:"email_request",email:e,firstName:D.firstName})});}catch(x){}
+}
+render();progress();
+</script>
+</body>
+</html>
